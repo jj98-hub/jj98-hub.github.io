@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geri Cost Calculation</title>
+    <!-- Importing Montserrat Font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: white;
+            color: black;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 500px;
+        }
+        /* Add your logo styling here */
+        .logo-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+            width: 100%;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        button {
+            background-color: #000;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-title">
+            <!-- Replace 'your-logo-url' with the actual URL of your logo image -->
+            <!-- <img src="your-logo-url" alt="Geri Logo" style="height: 50px;"> -->
+            <h1>Geri Cost Calculation</h1>
+        </div>
+
+        <div class="input-group">
+            <label for="material">Material Type:</label>
+            <select id="material">
+                <option value="wool">Wool</option>
+                <option value="cashmere">Cashmere</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="x">X Size (cm):</label>
+            <input type="number" id="x" placeholder="Enter X dimension">
+        </div>
+
+        <div class="input-group">
+            <label for="y">Y Size (cm):</label>
+            <input type="number" id="y" placeholder="Enter Y dimension">
+        </div>
+
+        <div class="input-group">
+            <label for="multiplier">Selling Price Multiplier:</label>
+            <select id="multiplier">
+                <option value="4">4x Cost Price</option>
+                <option value="5">5x Cost Price</option>
+                <option value="6">6x Cost Price</option>
+                <option value="7">7x Cost Price</option>
+                <option value="8">8x Cost Price</option>
+                <option value="9">9x Cost Price</option>
+                <option value="10">10x Cost Price</option>
+            </select>
+        </div>
+
+        <button onclick="calculatePrice()">Calculate Price</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function calculatePrice() {
+            // Get input values
+            const material = document.getElementById('material').value;
+            const x = parseFloat(document.getElementById('x').value);
+            const y = parseFloat(document.getElementById('y').value);
+            const multiplier = parseFloat(document.getElementById('multiplier').value);
+
+            // Check if X and Y are valid numbers
+            if (isNaN(x) || isNaN(y)) {
+                alert("Please enter valid numbers for X and Y sizes.");
+                return;
+            }
+
+            // Perform cost calculation based on material (using the final equations we settled on)
+            let costPrice;
+            if (material === 'wool') {
+                costPrice = 208.41 + (x * y * 0.008896) + (y * 1.289);
+            } else { // cashmere
+                costPrice = 289.02 + (x * y * 0.045174) + (y * 1.289);
+            }
+
+            // Calculate selling price
+            const sellingPrice = costPrice * multiplier;
+
+            // Display the result
+            document.getElementById('result').innerHTML = 
+                `Cost Price: HKD ${costPrice.toFixed(2)}<br>Selling Price (${multiplier}x): HKD ${sellingPrice.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
