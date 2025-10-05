@@ -73,7 +73,7 @@
     <div class="container">
         <div class="logo-title">
             <!-- <img src="your-logo-url" alt="Geri Logo" style="height: 50px;"> -->
-            <h1>Geri Cost Calculation</h1>
+            <h1>Cost Calculation</h1>
         </div>
 
         <div class="input-group">
@@ -132,17 +132,22 @@
             // Calculate machine days (scales with area)
             let machine_days;
             if (area <= 1400) {
-                machine_days = 0.2;
+                machine_days = 0.2; // For small wool pieces
             } else if (area <= 15000) {
                 machine_days = 0.2 + (1.3 * (area - 1400) / 13600);
             } else {
                 machine_days = 1.5 + (20.5 * (area - 15000) / 75000);
             }
 
+            // Adjust machine days for cashmere (based on original data)
+            if (material === 'cashmere' && area <= 2100) {
+                machine_days = 0.333; // Specific to cashmere small pieces
+            }
+
             // Calculate finishing days (scales with area)
             let finishing_days;
             if (area <= 1400) {
-                finishing_days = 0.125;
+                finishing_days = 0.125; // 8 pieces per day
             } else if (area <= 15000) {
                 finishing_days = 0.125 + (1.875 * (area - 1400) / 13600);
             } else {
@@ -153,11 +158,12 @@
             const machine_cost = 604.55 * machine_days;
             const labour_cost = 700 * finishing_days;
             
+            // PURE MATERIAL COSTS ONLY (no fixed costs included)
             let material_cost;
             if (material === 'wool') {
-                material_cost = 208.41 + (x * y * 0.008896) + (y * 1.289);
+                material_cost = (x * y * 0.008896) + (y * 1.289);
             } else { // cashmere
-                material_cost = 289.02 + (x * y * 0.045174) + (y * 1.289);
+                material_cost = (x * y * 0.045174) + (y * 1.289);
             }
 
             const costPrice = material_cost + machine_cost + labour_cost;
